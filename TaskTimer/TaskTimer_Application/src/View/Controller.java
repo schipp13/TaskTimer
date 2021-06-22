@@ -6,8 +6,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.util.Date;
+
 
 public class Controller {
     @FXML private Button startTimer;
@@ -32,27 +34,30 @@ public class Controller {
 
     @FXML private TableColumn<Task, Date> taskEndDateTableColumn;
 
+    /* ToDo
+        -Pause Timer listener
+        -Add Functionality for Add, Edit, and Delete Task
+        -Allow the user to save and load up a saved file
+
+     */
+
+
     /**
-     *  Future fixes:
-     *  Get Timer to just pop up and not replace the entire Main scene.
-     *  Get Timer scene to start up centered.
-     *
      *  Opens up the TimerForm
-     * @param event
+     *
      */
     public void startTimerListener(ActionEvent event) throws Exception
     {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/TimerForm.fxml"));
-        Parent root = loader.load();
-
-        TimerController controller = loader.getController();
-
-        Scene timerFormScene = new Scene(root);
-
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setScene(timerFormScene);
-        window.show();
+        // add if timer is set to 0 than just go to set the form else start the countdown again
+        Stage stage = new Stage();
+       Parent root = FXMLLoader.load(getClass().getResource("/View/TimerForm.fxml"));
+       stage.setScene(new Scene(root));
+       stage.initModality(Modality.APPLICATION_MODAL);
+       stage.initOwner(startTimer.getScene().getWindow());
+       stage.showAndWait();
 
     }
+
+
 }
 

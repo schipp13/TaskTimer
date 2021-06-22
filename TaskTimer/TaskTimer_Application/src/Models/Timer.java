@@ -3,28 +3,33 @@ package Models;
 
 public class Timer {
 
-    private int hours, minutes, seconds;
+    private String hours, minutes, seconds;
 
-    public void setHours(int hours) {
+    public Timer(String hours, String minutes, String seconds)
+    {
+        this.hours = hours;
+        this.minutes = minutes;
+        this.seconds = seconds;
+
+    }
+
+    public void setHours(String hours) {
         this.hours = hours;
     }
-    public void setMinutes(int minutes){
+    public void setMinutes(String minutes){
         this.minutes = minutes;
     }
-    public void setSeconds(int seconds)
-    {
-        this.seconds = seconds;
-    }
+    public void setSeconds(String seconds) { this.seconds = seconds; }
 
-    public int getHours(){
+    public String getHours(){
         return hours;
     }
 
-    public int getMinutes() {
+    public String getMinutes() {
         return minutes;
     }
 
-    public int getSeconds() {
+    public String getSeconds() {
         return seconds;
     }
 }
