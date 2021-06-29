@@ -1,7 +1,5 @@
 package Models;
 
-
-
 import java.util.Date;
 
 public class Task {
@@ -39,7 +37,6 @@ public class Task {
     public Date getEndDate() {
         return endDate;
     }
-
 
     public void setTaskID(int taskID) {
         this.taskID = taskID;

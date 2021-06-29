@@ -8,8 +8,8 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="155.0" prefWidth="323.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.TimerController">
    <children>
-      <Button fx:id="startTimer" layoutX="25.0" layoutY="214.0" mnemonicParsing="false" onAction="#startTimerListener" prefHeight="35.0" prefWidth="120.0" text="Ok" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="25.0" />
-      <Button fx:id="cancelTimer" layoutX="178.0" layoutY="214.0" mnemonicParsing="false" onAction="#cancelTimerListener" prefHeight="35.0" prefWidth="120.0" text="Cancel" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="25.0" />
+      <Button fx:id="saveTime" layoutX="25.0" layoutY="214.0" mnemonicParsing="false" onAction="#getTime" prefHeight="35.0" prefWidth="120.0" text="Ok" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="25.0" />
+      <Button fx:id="cancelTimer" layoutX="178.0" layoutY="214.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="Cancel" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="25.0" />
       <Label layoutX="25.0" layoutY="14.0" text="Set Time">
          <font>
             <Font size="19.0" />

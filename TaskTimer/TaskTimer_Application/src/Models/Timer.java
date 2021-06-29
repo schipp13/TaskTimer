@@ -1,15 +1,14 @@
 package Models;
 
-
 public class Timer {
 
     private String hours, minutes, seconds;
 
-    public Timer(String hours, String minutes, String seconds)
-    {
-        this.hours = hours;
-        this.minutes = minutes;
-        this.seconds = seconds;
+    public Timer(String Hours, String Minutes, String Seconds){
+
+        this.hours = Hours;
+        this.minutes = Minutes;
+        this.seconds = Seconds;
 
     }
 
@@ -21,15 +20,15 @@ public class Timer {
     }
     public void setSeconds(String seconds) { this.seconds = seconds; }
 
-    public String getHours(){
+    public  String getHours(){
         return hours;
     }
 
-    public String getMinutes() {
+    public  String getMinutes() {
         return minutes;
     }
 
-    public String getSeconds() {
+    public  String getSeconds() {
         return seconds;
     }
 }
