@@ -1,18 +1,21 @@
 package Models;
 
 import View.Main;
-import View.TimerController;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 
 public class MyThread implements Runnable{
 
-    String hrs,min,sec;
-    public MyThread(String hours, String minutes, String seconds) {
-        hrs = hours;
-        min = minutes;
-        sec = seconds;
+    int hours, minutes, seconds;
+    public MyThread(String Hours, String Minutes, String Seconds) {
+        hours = Integer.parseInt(Hours);
+        minutes = Integer.parseInt(Minutes);
+        seconds = Integer.parseInt(Seconds);
+
     }
 
     @Override
@@ -24,10 +27,6 @@ public class MyThread implements Runnable{
             e.printStackTrace();
         }
         Main controller = loader.getController();
-
-        int hours = Integer.parseInt(hrs);
-        int minutes = Integer.parseInt(min);
-        int seconds = Integer.parseInt(sec);
 
         while(hours > 0 || minutes > 0 || seconds > 0)
         {
@@ -52,6 +51,8 @@ public class MyThread implements Runnable{
             controller.hoursPlace.setText(String.valueOf(hours));
             controller.minutesPlace.setText(String.valueOf(minutes));
             controller.secondsPlace.setText(String.valueOf(seconds));
+
+
 
         }
 
