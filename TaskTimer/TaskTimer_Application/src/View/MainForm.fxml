@@ -60,22 +60,22 @@
                </font>
             </Label>
          </children></Pane>
-      <TableView fx:id="taskTableView" layoutX="14.0" layoutY="101.0" prefHeight="419.0" prefWidth="873.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="101.0">
+      <TableView fx:id="TaskTableView" layoutX="14.0" layoutY="101.0" prefHeight="419.0" prefWidth="873.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="101.0">
         <columns>
-          <TableColumn fx:id="taskIdColumn" editable="false" prefWidth="56.0" resizable="false" text="Task #" />
+          <TableColumn fx:id="taskIDColumn" editable="false" prefWidth="56.0" resizable="false" text="Task #" />
           <TableColumn fx:id="taskNameColumn" prefWidth="187.0" resizable="false" text="Task Name" />
             <TableColumn fx:id="taskDescriptionColumn" prefWidth="373.0" resizable="false" text="Task Details" />
-            <TableColumn fx:id="taskStartDateTableColumn" minWidth="0.0" prefWidth="131.0" resizable="false" text="Start Date" />
-            <TableColumn fx:id="taskEndDateTableColumn" prefWidth="124.0" resizable="false" text="End Date" />
+            <TableColumn fx:id="taskStartDateColumn" minWidth="0.0" prefWidth="131.0" resizable="false" text="Start Date" />
+            <TableColumn fx:id="taskEndDateColumn" prefWidth="124.0" resizable="false" text="End Date" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button fx:id="addTask" layoutX="35.0" layoutY="536.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="111.0" text="New Task" />
-      <Button fx:id="editTask" layoutX="170.0" layoutY="536.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="111.0" text="Edit Task" />
-      <Button fx:id="deleteTask" layoutX="304.0" layoutY="536.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="111.0" text="Delete Task" />
+      <Button fx:id="addTask" layoutX="35.0" layoutY="536.0" mnemonicParsing="false" onAction="#addTaskListener" prefHeight="34.0" prefWidth="111.0" text="New Task" />
+      <Button fx:id="editTask" layoutX="170.0" layoutY="536.0" mnemonicParsing="false" onAction="#editTaskListener" prefHeight="34.0" prefWidth="111.0" text="Edit Task" />
+      <Button fx:id="deleteTask" layoutX="304.0" layoutY="536.0" mnemonicParsing="false" onAction="#deleteTaskListener" prefHeight="34.0" prefWidth="111.0" text="Delete Task" />
       <Button fx:id="startTimer" layoutX="329.0" layoutY="53.0" mnemonicParsing="false" onAction="#startTimerListener" text="Start" />
-      <Button fx:id="stopTimer" layoutX="397.0" layoutY="53.0" mnemonicParsing="false" text="Pause" />
+      <Button fx:id="stopTimer" layoutX="397.0" layoutY="53.0" mnemonicParsing="false" onAction="#pauseTimerListener" text="Pause" />
    </children>
 </AnchorPane>

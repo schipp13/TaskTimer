@@ -1,15 +1,15 @@
 package Models;
 
-import java.util.Date;
 
 public class Task {
     private int taskID;
     private String taskName;
     private String taskDescription;
-    private Date startDate;
-    private Date endDate;
+    private String startDate;
+    private String endDate;
 
-    public Task(int taskID, String taskName, String taskDescription, Date startDate, Date endDate)
+
+    public Task(int taskID, String taskName, String taskDescription, String startDate, String endDate)
     {
         this.taskID = taskID;
         this.taskName = taskName;
@@ -30,11 +30,11 @@ public class Task {
         return taskName;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
@@ -50,11 +50,11 @@ public class Task {
         this.taskName = taskName;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 }

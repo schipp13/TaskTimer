@@ -11,6 +11,8 @@ public class TimerController {
 
     @FXML private Button saveTime;
 
+    @FXML private Button cancelTime;
+
     @FXML private TextField setTime;
 
     public String Hours;
@@ -22,7 +24,6 @@ public class TimerController {
      * @param event
      * @throws Exception
      */
-
     public void getTime(ActionEvent event) throws Exception {
 
         String time = setTime.getText();
@@ -36,4 +37,22 @@ public class TimerController {
         stage.close();
 
     }
+
+    /**
+     * Goes back to the main form without making changes to the time.
+     *
+     * @param event
+     * @throws Exception
+     */
+    public void cancelTimeListener(ActionEvent event) throws Exception
+    {
+        Hours = "00";
+        Minutes = "00";
+        Seconds = "00";
+
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
+    }
+
 }
