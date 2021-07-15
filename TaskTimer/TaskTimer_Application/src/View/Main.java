@@ -5,6 +5,7 @@ import Models.ManageTasks;
 import Models.Task;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,9 +20,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 
 
 public class Main extends Application implements Initializable {
@@ -48,6 +51,53 @@ public class Main extends Application implements Initializable {
 
     Parent root;
     boolean running = true;
+
+
+           /**
+            * Loads saved task into the table view
+            */
+           // todo: Allow the user to choose which file to load from.
+   public void loadFile() throws Exception
+    {
+        List<Task> readTask = new ArrayList<>();
+        BufferedReader reader = Files.newBufferedReader(Paths.get("Tasks.txt"));
+        String line;
+        while((line = reader.readLine()) != null)
+        {
+            String[] readTasks = line.split(",");
+
+            readTask.add(new Task(Integer.parseInt(readTasks[0]), readTasks[1], readTasks[2], readTasks[3], readTasks[4]));
+
+        }
+
+    reader.close();
+
+        for(Task task : readTask)
+        {
+            ManageTasks.addTask(task);
+        }
+
+
+    }
+    /**
+     * Write to a textfile to be saved
+     * @throws Exception
+     */
+    // Todo: Allow the user to choose where they want to save the information.
+   public void saveFile()throws Exception
+    {
+        ObservableList<Task> writeTasks = ManageTasks.getAllTasks();
+        File file = new File("Tasks.txt");
+        FileWriter writer = new FileWriter(file);
+
+       for(Task task : writeTasks)
+       {
+           writer.write(task.getTaskID() + "," + task.getTaskName() + "," + task.getTaskDescription() + "," + task.getStartDate() + "," + task.getEndDate() + "\n");
+       }
+
+        writer.close();
+
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -81,14 +131,12 @@ public class Main extends Application implements Initializable {
      * @param event
      * @throws IOException
      */
+    // todo: Implement a way to pause the timer
+    // todo: redesign the countdown logic
     public void startTimerListener(ActionEvent event) throws IOException{
-
-
         // If time hasn't been set open the timerform to set the time
         // else start the timer from being paused
 
-        if(hoursPlace.getText().equals("00") && minutesPlace.getText().equals("00") && secondsPlace.getText().equals("00"))
-        {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/TimerForm.fxml"));
             root = loader.load();
 
@@ -100,63 +148,61 @@ public class Main extends Application implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
 
-            // Set the time to be displayed
-            this.hoursPlace.setText(timeController.Hours);
-            this.minutesPlace.setText(timeController.Minutes);
-            this.secondsPlace.setText(timeController.Seconds);
+        // Set the time to be displayed
+        String hours = timeController.Hours, minutes = timeController.Minutes, seconds = timeController.Seconds;
 
-            while(!running) {
-                taskThread = new Thread(new Runnable() {
-                    int hours, minutes, seconds;
+        this.hoursPlace.setText(timeController.Hours);
+        this.minutesPlace.setText(timeController.Minutes);
+        this.secondsPlace.setText(timeController.Seconds);
 
-                    @Override
-                    public void run() {
 
-                        // sets the variables to be computed for the countdown
-                        hours = Integer.parseInt(hoursPlace.getText());
-                        minutes = Integer.parseInt(minutesPlace.getText());
-                        seconds = Integer.parseInt(secondsPlace.getText());
+        taskThread = new Thread(new Runnable() {
+            int hours, minutes, seconds;
 
-                        // loops to count down the timer
-                        while (hours > 0 || minutes > 0 || seconds > 0) {
-                            if (seconds == 0) {
-                                minutes -= 1;
-                                seconds = 59;
-                            }
-                            if (minutes == 0) {
-                                hours -= 1;
-                                minutes = 59;
-                            }
+            @Override
+            public void run() {
 
-                            // Sleeps the thread
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            seconds--;
+                // sets the variables to be computed for the countdown
+                hours = Integer.parseInt(hoursPlace.getText());
+                minutes = Integer.parseInt(minutesPlace.getText());
+                seconds = Integer.parseInt(secondsPlace.getText());
 
-                            Platform.runLater(() -> {
-                                hoursPlace.setText(String.valueOf(hours));
-                                minutesPlace.setText(String.valueOf(minutes));
-                                secondsPlace.setText(String.valueOf(seconds));
-                            });
-                        }
+                // loops to count down the timer
+                while (hours > 0 || minutes > 0 || seconds > 0) {
+                    if (seconds == 0) {
+                        minutes -= 1;
+                        seconds = 59;
                     }
-                });
+                    if (minutes == 0) {
+                        hours -= 1;
+                        minutes = 59;
+                    }
 
+                    // Sleeps the thread
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    seconds--;
+
+                    Platform.runLater(() -> {
+                        hoursPlace.setText(String.valueOf(hours));
+                        minutesPlace.setText(String.valueOf(minutes));
+                        secondsPlace.setText(String.valueOf(seconds));
+                    });
+                }
             }
-        }
-            taskThread.start();
+        });
 
+        taskThread.start();
 
     }
+        // todo: implement a way to pause the timer
     public void pauseTimerListener(ActionEvent event) throws Exception
     {
-        running = false;
+
     }
-
-
 
     /**
      * Add a new task to the main forms table

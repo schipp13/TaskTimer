@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ManageTasks {
+
     private static ObservableList<Task> allTasks = FXCollections.observableArrayList();
 
     public static void addTask(Task newTask)
