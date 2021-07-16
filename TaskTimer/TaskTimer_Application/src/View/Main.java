@@ -47,16 +47,13 @@ public class Main extends Application implements Initializable {
 
     @FXML private TableColumn<Task, String> taskEndDateColumn;
 
-    Thread taskThread;
-
     Parent root;
-    boolean running = true;
+    Timer timer = new Timer();
 
-
-           /**
-            * Loads saved task into the table view
-            */
-           // todo: Allow the user to choose which file to load from.
+    /**
+     *  Loads saved task into the table view
+    */
+   // todo: Allow the user to choose which file to load from.
    public void loadFile() throws Exception
     {
         List<Task> readTask = new ArrayList<>();
@@ -131,137 +128,129 @@ public class Main extends Application implements Initializable {
      * @param event
      * @throws IOException
      */
-    // todo: Implement a way to pause the timer
-    // todo: redesign the countdown logic
-    public void startTimerListener(ActionEvent event) throws IOException{
+
+    public void startTimerListener(ActionEvent event) throws IOException {
         // If time hasn't been set open the timerform to set the time
         // else start the timer from being paused
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/TimerForm.fxml"));
-            root = loader.load();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/TimerForm.fxml"));
+        root = loader.load();
 
-            TimerController timeController = loader.getController();
+        TimerController timeController = loader.getController();
 
-            // Opens the TimerForm as a popup window
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
+        // Opens the TimerForm as a popup window
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
 
-        // Set the time to be displayed
-        String hours = timeController.Hours, minutes = timeController.Minutes, seconds = timeController.Seconds;
-
+        // Set the forms labels
         this.hoursPlace.setText(timeController.Hours);
         this.minutesPlace.setText(timeController.Minutes);
         this.secondsPlace.setText(timeController.Seconds);
 
+        countdown();
 
-        taskThread = new Thread(new Runnable() {
-            int hours, minutes, seconds;
+    }
+
+    // Countdown and update labels
+    public void countdown() {
+        TimerTask task = new TimerTask() {
+            int hours, min, sec;
 
             @Override
             public void run() {
 
-                // sets the variables to be computed for the countdown
+                sec = Integer.parseInt(secondsPlace.getText());
+                min = Integer.parseInt(minutesPlace.getText());
                 hours = Integer.parseInt(hoursPlace.getText());
-                minutes = Integer.parseInt(minutesPlace.getText());
-                seconds = Integer.parseInt(secondsPlace.getText());
 
-                // loops to count down the timer
-                while (hours > 0 || minutes > 0 || seconds > 0) {
-                    if (seconds == 0) {
-                        minutes -= 1;
-                        seconds = 59;
-                    }
-                    if (minutes == 0) {
-                        hours -= 1;
-                        minutes = 59;
-                    }
-
-                    // Sleeps the thread
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    seconds--;
-
+                if (hours == 0 && min == 0 && sec == 0) {
+                    timer.cancel();
                     Platform.runLater(() -> {
+                        secondsPlace.setText("00");
+                        minutesPlace.setText("00");
+                        hoursPlace.setText("00");
+                    });
+                } else {
+                    sec--;
+                    if (sec < 0) {
+                        sec = 59;
+                        min--;
+                        if (min < 0) {
+                            min = 59;
+                            hours--;
+                        }
+                    }
+                    Platform.runLater(() -> {
+                        secondsPlace.setText(String.valueOf(sec));
+                        minutesPlace.setText(String.valueOf(min));
                         hoursPlace.setText(String.valueOf(hours));
-                        minutesPlace.setText(String.valueOf(minutes));
-                        secondsPlace.setText(String.valueOf(seconds));
                     });
                 }
             }
-        });
+        };
 
-        taskThread.start();
-
-    }
-        // todo: implement a way to pause the timer
-    public void pauseTimerListener(ActionEvent event) throws Exception
-    {
-
+        // Call the run method every second
+        timer.scheduleAtFixedRate(task, 0, 1000);
     }
 
-    /**
-     * Add a new task to the main forms table
-     *
-     */
-    public void addTaskListener(ActionEvent event) throws Exception
-    {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/TaskForm.fxml"));
-        root = loader.load();
+            public void pauseTimerListener(ActionEvent event) throws Exception {
+               this.timer.cancel();
+            }
 
-        TaskController controller = loader.getController();
+            /**
+             * Add a new task to the main forms table
+             */
+            public void addTaskListener(ActionEvent event) throws Exception {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/TaskForm.fxml"));
+                root = loader.load();
 
-        // Set the title label here
-        controller.setLabelTitle("Add Task");
+                TaskController controller = loader.getController();
 
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
+                // Set the title label here
+                controller.setLabelTitle("Add Task");
 
-    }
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.showAndWait();
 
-    /**
-     * Modify a task an re-upload task to the task table
-     *
-     */
-    public void editTaskListener(ActionEvent event)throws Exception
-    {
-        Task selectedTask = TaskTableView.getSelectionModel().getSelectedItem();
-        int index = TaskTableView.getSelectionModel().getSelectedIndex();
+            }
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/TaskForm.fxml"));
-        root = loader.load();
+            /**
+             * Modify a task an re-upload task to the task table
+             */
+            public void editTaskListener(ActionEvent event) throws Exception {
+                Task selectedTask = TaskTableView.getSelectionModel().getSelectedItem();
+                int index = TaskTableView.getSelectionModel().getSelectedIndex();
 
-        TaskController controller = loader.getController();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/TaskForm.fxml"));
+                root = loader.load();
 
-        // Set the title label here
-        controller.setLabelTitle("Modify Task");
+                TaskController controller = loader.getController();
 
-        // Enable the radio button to complete task
-        controller.enableRadioButton();
-        controller.setSelectedTask(selectedTask, index);
+                // Set the title label here
+                controller.setLabelTitle("Modify Task");
 
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
+                // Enable the radio button to complete task
+                controller.enableRadioButton();
+                controller.setSelectedTask(selectedTask, index);
 
-    }
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.showAndWait();
 
-    /**
-     * Delete a task from the task table
-     *
-     */
-    public void deleteTaskListener(ActionEvent event)throws Exception
-    {
-        Task selectedTask = TaskTableView.getSelectionModel().getSelectedItem();
+            }
 
-        ManageTasks.deleteTask(selectedTask);
-    }
+            /**
+             * Delete a task from the task table
+             */
+            public void deleteTaskListener(ActionEvent event) throws Exception {
+                Task selectedTask = TaskTableView.getSelectionModel().getSelectedItem();
 
+                ManageTasks.deleteTask(selectedTask);
+            }
 }
+
