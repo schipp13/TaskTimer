@@ -57,7 +57,7 @@ public class Main extends Application implements Initializable {
     /**
      *  Loads saved task into the table view
     */
-   // todo: Allow the user to choose which file to load from.
+  
    public void loadFile() throws Exception
     {
         List<Task> readTask = new ArrayList<>();
@@ -84,7 +84,7 @@ public class Main extends Application implements Initializable {
      * Write to a textfile to be saved
      * @throws Exception
      */
-    // Todo: Allow the user to choose where they want to save the information.
+   
    public void saveFile()throws Exception
     {
         ObservableList<Task> writeTasks = ManageTasks.getAllTasks();
@@ -182,6 +182,8 @@ public class Main extends Application implements Initializable {
                         timer.cancel();
                         timer.purge();
                         startTimer.setDisable(false);
+                        AePlayWave aw = new AePlayWave( "mixkit-musical-reveal-961.wav" );
+                        aw.start();  
                     });
 
                 } else {
